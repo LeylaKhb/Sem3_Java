@@ -6,8 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="itis-11-201-sem1" />
+        <module name="Sem3_Java" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="itis-11-201-sem1" target="19" />
+    </bytecodeTargetLevel>
   </component>
 </project>

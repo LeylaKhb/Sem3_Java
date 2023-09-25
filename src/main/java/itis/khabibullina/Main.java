@@ -1,13 +1,13 @@
 package itis.khabibullina;
 
-import itis.khabibullina.net.client.NetSample;
+import itis.khabibullina.net.client.HttpClientImpl;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
-        NetSample net = new NetSample();
+        HttpClientImpl net = new HttpClientImpl();
         Map<String, String> map = new HashMap<>();
         map.put("name", "Sen. Anala Iyer");
         map.put("email", "sen_aRa_iyer143683@stroman-leannon.test");
