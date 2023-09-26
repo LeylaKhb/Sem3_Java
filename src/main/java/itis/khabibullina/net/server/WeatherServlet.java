@@ -2,6 +2,9 @@ package itis.khabibullina.net.server;
 
 import com.google.gson.*;
 import itis.khabibullina.net.client.HttpClientImpl;
+import itis.khabibullina.net.dto.ForecastDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,6 +18,8 @@ import java.util.*;
 @WebServlet(name = "weatherServlet", urlPatterns = "/weather")
 
 public class WeatherServlet extends HttpServlet {
+    private static final Logger LOGGER = LoggerFactory.getLogger(LoginServlet.class);
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession httpSession = req.getSession();
@@ -26,8 +31,10 @@ public class WeatherServlet extends HttpServlet {
         params.put("appid", APIKey);
 
         HttpClientImpl httpClient = new HttpClientImpl();
+        long time = System.currentTimeMillis();
         String forecast = httpClient.get("https://api.openweathermap.org/data/2.5/weather",
                 params);
+        LOGGER.info("Time of getting forecast: " + String.valueOf( System.currentTimeMillis() - time) + "ms");
 
         if (!forecast.equals("")) {
             JsonElement forecastJSON = new JsonParser().parse(forecast);
@@ -35,14 +42,11 @@ public class WeatherServlet extends HttpServlet {
             JsonObject weatherInForecast = forecastJSON.getAsJsonObject().get("weather").getAsJsonArray()
                     .get(0).getAsJsonObject();
 
-            Float temp = mainInForecast.get("temp").getAsFloat();
+            String temp = String.valueOf(mainInForecast.get("temp").getAsFloat() - 273);
             String humidity = mainInForecast.get("humidity").getAsString();
             String precipitation = weatherInForecast.get("description").getAsString();
 
-            req.setAttribute("temp", temp - 273);
-            req.setAttribute("humidity", humidity);
-            req.setAttribute("precipitation", precipitation);
-            req.setAttribute("cityName", cityName);
+            req.setAttribute("forecast", new ForecastDto(humidity, temp, precipitation, cityName));
         }
         req.getRequestDispatcher("weather.ftl").forward(req, resp);
     }

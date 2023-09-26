@@ -5,17 +5,17 @@
 <#macro header>Forecast</#macro>
 
 <#macro content>
-    It's your forecast for ${cityName}
-    <br>
-    <#if temp??>
-        <strong>Temperature</strong>: ${temp}°C
+    <#if forecast??>
+        It's your forecast for ${forecast.cityName}
         <br>
-        <strong>Humidity</strong>: ${humidity}
+        <strong>Temperature</strong>: ${forecast.temp}°C
         <br>
-        <strong>Precipitation</strong>: ${precipitation}
+        <strong>Humidity</strong>: ${forecast.humidity}
+        <br>
+        <strong>Precipitation</strong>: ${forecast.precipitation}
     </#if>
-    <#if !temp??>
-        <p>Can't find forecast for ${cityName}</p>
+    <#if !forecast??>
+        <p>Can't find forecast</p>
     </#if>
 </#macro>
 

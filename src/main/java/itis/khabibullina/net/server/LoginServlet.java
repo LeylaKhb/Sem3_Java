@@ -1,5 +1,7 @@
 package itis.khabibullina.net.server;
 
+import org.slf4j.*;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
@@ -10,6 +12,7 @@ public class LoginServlet extends HttpServlet {
 
     public static final String LOGIN = "login";
     public static final String PASSWORD = "password123";
+    private static final Logger LOGGER = LoggerFactory.getLogger(LoginServlet.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -22,6 +25,7 @@ public class LoginServlet extends HttpServlet {
         String password = req.getParameter("password");
 
         if (LOGIN.equalsIgnoreCase(login) && PASSWORD.equals(password)) {
+            LOGGER.info("User with login {} logged in", login);
             // session
             HttpSession httpSession = req.getSession();
             httpSession.setAttribute("username", login);

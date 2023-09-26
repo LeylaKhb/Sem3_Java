@@ -2,6 +2,7 @@ package itis.khabibullina.net.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.*;
+import itis.khabibullina.net.dto.ForecastDto;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -127,4 +128,5 @@ public class HttpClientImpl implements HttpClient {
         }
         return null;
     }
+
 }
