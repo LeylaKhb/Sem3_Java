@@ -22,9 +22,8 @@ public class WeatherServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession httpSession = req.getSession();
-
-        String cityName = String.valueOf(httpSession.getAttribute("cityName"));
+        resp.setContentType("text/plain");
+        String cityName = req.getParameter("city");
         String APIKey = "7158fed5a7566d75dcb1c18bd78573eb";
         Map<String, String> params = new HashMap<>();
         params.put("q", cityName);
@@ -46,9 +45,11 @@ public class WeatherServlet extends HttpServlet {
             String humidity = mainInForecast.get("humidity").getAsString();
             String precipitation = weatherInForecast.get("description").getAsString();
 
-            req.setAttribute("forecast", new ForecastDto(humidity, temp, precipitation, cityName));
+            resp.getWriter().write(String.format("Humidity: " + humidity + ", temp: " + temp + ", precipitation: " + precipitation));
         }
-        req.getRequestDispatcher("weather.ftl").forward(req, resp);
+
+
+//        req.getRequestDispatcher("weather.ftl").forward(req, resp);
     }
 
     @Override

@@ -1,23 +1,39 @@
 package itis.khabibullina;
 
 import itis.khabibullina.net.client.HttpClientImpl;
+import itis.khabibullina.net.model.User;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.sql.*;
+import java.util.*;
 
 public class Main {
-    public static void main(String[] args) {
-        HttpClientImpl net = new HttpClientImpl();
-        Map<String, String> map = new HashMap<>();
-        map.put("name", "Sen. Anala Iyer");
-        map.put("email", "sen_aRa_iyer143683@stroman-leannon.test");
-        map.put("gender", "female");
-        map.put("status", "active");
+    public static void main(String[] args) throws SQLException, ClassNotFoundException {
+        Class.forName("org.postgresql.Driver");
+        Connection connection = DriverManager.getConnection(
+                "jdbc:postgresql://localhost:5432/test_itis",
+                "postgres",
+                "postgres"
+        );
 
-        net.get("https://gorest.co.in/public/v2/users", map);
-        net.post("https://gorest.co.in/public/v2/users", map);
-        net.put("https://gorest.co.in/public/v2/users", map);
-        net.get("https://gorest.co.in/public/v2/users", map);
-        net.delete("https://gorest.co.in/public/v2/users", map);
+        Statement statement = connection.createStatement();
+        String sql = "SELECT * from users";
+        ResultSet resultSet = statement.executeQuery(sql);
+        List<User> users = new ArrayList<>();
+
+
+        if (resultSet != null) {
+            while (resultSet.next()) {
+                users.add(
+                        new User(
+                                resultSet.getInt("id"),
+                                resultSet.getString("name"),
+                                resultSet.getString("lastname"),
+                                resultSet.getString("email"),
+                                resultSet.getString("login"),
+                                resultSet.getString("password")
+                                )
+                );
+            }
+        }
     }
 }
